@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>NamSay Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="images/icon.jpg">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: white;
+            text-align: center;
+            position: relative; /* ✅ Quan trọng! */
+        }
+
+        /* ✅ CSS cho ảnh background */
+        #bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2; /* ✅ Phía sau cả overlay */
+        }
+
+        /* ✅ Lớp phủ tối - KHÔNG phải ảnh! */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Màu đen trong suốt */
+            z-index: -1; /* ✅ Phía sau content, trước background */
+        }
+
+        section {
+            position: relative;
+            z-index: 1; /* ✅ Trên cùng */
+        }
+
+        .avatar {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+        }
+
+        h1 {
+            margin: 20px 0 10px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+        }
+
+        .button {
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body id="bg-site">
+<!-- ✅ Background image - NGOÀI tất cả sections -->
+<img src="images/background.jpg" id="bg-image" alt="Background">
+
+<!-- ✅ Overlay tối - KHÔNG phải <img>! -->
+<div class="overlay"></div>
+
+<!-- ✅ Nội dung sections -->
+<section id="page-1">
+    <img src="images/ghiban.jpg" alt="Avatar" class="avatar">
+    <h1>Welcome to NamSay</h1>
+    <p>Đây là trang web đầu tiên của Tôi. Hãy nhấn nút bên dưới để tiếp tục!</p>
+    <button class="button">Continue</button>
+</section>
+
+<section id="page-2">
+    <img src="images/maunam.jpg" alt="Avatar" class="avatar">
+    <h1>About Me</h1>
+    <p>My name is Nam Say, I'm a second-year student in UET university.<br> I'm so handsome and kind.<br> I love pushing myself every day.</p>
+    <button class="button">Continue</button>
+</section>
+
+<section id="page-3" class="solution">
+    <h1> You need to enter password. </h1>
+    <label for="username">Enter password</label><br>
+    <input type="text" id="username" name="username" placeholder="password"><br><br>
+    <button class="button">Continue</button>
+</section>
+
+<section id="page-4" class="solution">
+    <h1>Solution </h1>
+    <h2>Câu 3 C, D chưa học không biết làm</h2>
+
+    <object data="documents/Exercise.pdf" type="application/pdf" width="100%" height="600px">
+        <p>Trình duyệt không hỗ trợ xem PDF.
+            <a href="documents/Exercise.pdf">Tải xuống tại đây</a>
+        </p>
+    </object>
+    <button class="button">Continue</button>
+</section>
+
+
+<script>
+    const sections = document.querySelectorAll('section');
+    const usernameInput = document.getElementById("username");
+    let currentSection = 0;
+
+    // Hàm hiển thị section chuyên nghiệp hơn
+    function showSection(index) {
+        sections.forEach((section, i) => {
+            section.style.display = i === index ? 'block' : 'none';
+        });
+    }
+
+    // Khởi tạo trạng thái ban đầu
+    showSection(currentSection);
+
+    // Xử lý chuyển đổi section tập trung
+    function handleSectionChange() {
+        // 1. Kiểm tra điều kiện tại Section 2 (Xác thực)
+        if (currentSection === 2) {
+            if (usernameInput && usernameInput.value !== "namdeptrai") {
+                alert("Sai tên đăng nhập!"); // Thêm thông báo để người dùng biết
+                return;
+            }
+        }
+
+        // 2. Kiểm tra nếu là Section cuối cùng
+        if (currentSection === sections.length - 1) {
+            currentSection = 2; // Quay lại section 2 theo ý đồ của bạn
+        } else {
+            currentSection++;
+        }
+
+        showSection(currentSection);
+    }
+
+    // Gán sự kiện
+    sections.forEach((section) => {
+        const button = section.querySelector('button');
+        if (button) {
+            button.addEventListener('click', handleSectionChange);
+        }
+    });
+
+    // Sự kiện phím Enter cho input username
+    if (usernameInput) {
+        usernameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSectionChange();
+            }
+        });
+    }
+</script>
+</body>
+</html>
